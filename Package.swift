@@ -3,6 +3,6 @@ import PackageDescription
 let package = Package(
   name:  "swiftysockets",
   dependencies: [
-    .Package(url:  "../Tide", majorVersion: 0),
+    .Package(url:  "https://github.com/iachievedit/Tide", majorVersion: 0),
   ]
 )
