@@ -15,3 +15,5 @@ let package = Package(
   ]
 )
 ```
+
+An example of how to use `swiftysockets` can be found in our [`swiftychat`](https://github.com/iachievedit/swiftychat) application.
