@@ -23,7 +23,11 @@
 // SOFTWARE.
 
 import Tide
+#if os(Linux)
 import Glibc
+#else
+import Darwin
+#endif
 
 public final class TCPServerSocket {
     private var socket: tcpsock
