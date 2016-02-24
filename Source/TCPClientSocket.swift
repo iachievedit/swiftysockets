@@ -24,8 +24,9 @@
 
 import Tide
 import Glibc
+import Foundation
 
-public final class TCPClientSocket {
+public final class TCPClientSocket: TCPSocket {
     private var socket: tcpsock
     public private(set) var closed = false
 
@@ -86,6 +87,24 @@ public final class TCPClientSocket {
             throw TCPError(description: description)
         }
     }
+
+	/**
+	 * Lower level access to the socket in order to allow for reading
+	 * all available data at once
+	**/
+	public func readData() throws -> NSData {
+		if closed {
+			throw TCPError(description: "Closed socket")
+		}
+
+		let finalData = NSMutableData(capacity: 1)!
+		while( errno == 0 ) {
+			var byte: [Int8] = [Int8](count: 1, repeatedValue: 0)
+			tcprecv(socket, &byte, sizeof(Int8))
+			finalData.appendBytes(byte, length: sizeof(Int8))
+		}
+		return finalData
+	}
 
     public func receive(bufferSize bufferSize: Int = 256) throws -> [Int8] {
         if closed {
