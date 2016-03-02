@@ -26,7 +26,7 @@ import EventC
 
 typealias EvPtr = COpaquePointer
 
-protocol EventLoopDelegate {
+public protocol EventLoopDelegate {
 	func serverSocketEvent(event: Event)
 	func clientSocketEvent(event: Event)
 }
@@ -38,7 +38,7 @@ public class EventLoop
 	private let eventBase: EvPtr
 	private var events:    [Event] = [Event]()
 
-	var delegate: EventLoopDelegate?
+	public var delegate: EventLoopDelegate?
 
 	private static var eventCallBack: CEventCallBack {
 		let callback: CEventCallBack = {
@@ -58,7 +58,7 @@ public class EventLoop
 	 *
 	 * @return void
 	**/
-	class func unblockSocket(socket: TCPSocket) -> Void {
+	public class func unblockSocket(socket: TCPSocket) -> Void {
 		evutil_make_socket_nonblocking(socket.fileDescriptor)
 	}
 
@@ -70,7 +70,7 @@ public class EventLoop
 		event_free(eventBase)
 	}
 
-	func fireEvent(fd: Int32, type: Int16, userInfo: UnsafeMutablePointer<Void>) -> Void {
+	public func fireEvent(fd: Int32, type: Int16, userInfo: UnsafeMutablePointer<Void>) -> Void {
 		for event in events {
 			if( event.socket!.fileDescriptor == fd ) {
 
@@ -90,14 +90,14 @@ public class EventLoop
 		print("Event was fired but unable to find the event/socket")
 	}
 
-	func add(socket: TCPSocket, event: Event) -> Void {
+	public func add(socket: TCPSocket, event: Event) -> Void {
 		// TODO: Probably check if the event already exists in our list
 		event.socket = socket
 		event.register(socket.fileDescriptor, eventBase: eventBase, callback: EventLoop.eventCallBack)
 		events.append(event)
 	}
 
-	func remove(socket: TCPSocket) {
+	public func remove(socket: TCPSocket) {
 		for (index, element) in events.enumerate() {
 			if( element.socket!.fileDescriptor == socket.fileDescriptor ) {
 				events.removeAtIndex(index)
@@ -107,7 +107,7 @@ public class EventLoop
 		//events = events.filter{ ($0.socket!) !== socket }
 	}
 
-	func run() {
+	public func run() {
 		let r = event_base_dispatch(eventBase)
 		if( r == 1 ) {
 			run()

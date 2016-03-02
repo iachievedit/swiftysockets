@@ -26,10 +26,10 @@ import EventC
 
 typealias CEventCallBack = @convention(c) (Int32, Int16, UnsafeMutablePointer<Void>) -> ()
 
-class Event
+public final class Event
 {
-	var type: Int32
-	var socket: TCPSocket?
+	public var type: Int32
+	public var socket: TCPSocket?
 	private(set) var event: EvPtr?
 
 	/**
@@ -37,16 +37,20 @@ class Event
 	 * as they most often will be used for a server scenario where multiple
 	 * connections are to be expected ( and handled )
 	**/
-	class func acceptEvent() -> Event {
+	public class func acceptEvent() -> Event {
 		return Event(evType: EV_READ+EV_PERSIST)
 	}
 
-	class func readableEvent() -> Event {
+	public class func readableEvent() -> Event {
 		return Event(evType: EV_READ)
 	}
 
-	class func writableEvent() -> Event {
+	public class func writableEvent() -> Event {
 		return Event(evType: EV_WRITE)
+	}
+
+	public class func readWriteEvent() -> Event {
+		return Event(evType: EV_WRITE+EV_READ)
 	}
 
 	init(evType: Int32 = 0x0) {
@@ -61,7 +65,7 @@ class Event
 		}
 	}
 
-	func register(fd: Int32, eventBase: EvPtr, callback: CEventCallBack) {
+	public func register(fd: Int32, eventBase: EvPtr, callback: CEventCallBack) {
 		if( event == nil ) {
 			event = event_new(
 				eventBase,
@@ -76,7 +80,7 @@ class Event
 		}
 	}
 
-	func remove() {
+	public func remove() {
 		guard let ev = event else {
 			return
 		}
@@ -85,7 +89,7 @@ class Event
 		event = nil
 	}
 
-	func makePersistent() {
+	public func makePersistent() {
 		if( (type & EV_PERSIST) == 0 ) {
 			type = type + EV_PERSIST
 		}
