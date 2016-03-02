@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-protocol TCPSocket
+public protocol TCPSocket
 {
-	var fileDescriptor: Int32 { get }
+	public var fileDescriptor: Int32 { get }
 }
