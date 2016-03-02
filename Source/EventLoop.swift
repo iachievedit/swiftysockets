@@ -24,7 +24,7 @@
 
 import EventC
 
-typealias EvPtr = COpaquePointer
+public typealias EvPtr = COpaquePointer
 
 public protocol EventLoopDelegate {
 	func serverSocketEvent(event: Event)

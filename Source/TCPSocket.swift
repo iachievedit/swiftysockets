@@ -24,5 +24,5 @@
 
 public protocol TCPSocket
 {
-	public var fileDescriptor: Int32 { get }
+	var fileDescriptor: Int32 { get }
 }

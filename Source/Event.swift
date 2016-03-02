@@ -24,7 +24,7 @@
 
 import EventC
 
-typealias CEventCallBack = @convention(c) (Int32, Int16, UnsafeMutablePointer<Void>) -> ()
+public typealias CEventCallBack = @convention(c) (Int32, Int16, UnsafeMutablePointer<Void>) -> ()
 
 public final class Event
 {
