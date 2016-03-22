@@ -106,6 +106,11 @@ public final class TCPClientSocket: TCPSocket {
 		return finalData
 	}
 
+	public func availableData() -> Int
+	{
+		return Int(available_bytes_for_reading(socket))
+	}
+
     public func receive(bufferSize bufferSize: Int = 256) throws -> [Int8] {
         if closed {
             throw TCPError(description: "Closed socket")
