@@ -25,7 +25,7 @@
 import Tide
 import Glibc
 
-public final class TCPServerSocket {
+public final class TCPServerSocket: TCPSocket {
     private var socket: tcpsock
     public private(set) var closed = false
 
@@ -40,7 +40,7 @@ public final class TCPServerSocket {
     public init(ip: IP, backlog: Int = 10) throws {
         self.socket = tcplisten(ip.address, Int32(backlog))
 
-        if errno != 0 {
+    	if errno != 0 {
             closed = true
             let description = TCPError.lastSystemErrorDescription
             throw TCPError(description: description)
